@@ -137,8 +137,6 @@ jobs:
           
           # Create fresh assignment from cleaned main
           git checkout -b assignment origin/main
-          git rm .github/workflows/generate-student-notebook.yml
-          git rm requirements.txt
           git add .
           
           # Commit and capture hash if there are staged changes
@@ -170,8 +168,15 @@ jobs:
             git add book/_config.yml
             git commit -m "Update git_exclude_commits with cleaning commit hash"
           } || echo "No changes to commit"
+
           
-          git push origin assignmnet
+          #remove unnecessary files for students
+          git rm .github/workflows/generate-student-notebook.yml
+          git rm requirements.txt
+          git add .
+          git commit "Removed authoring files"
+          
+          git push origin assignment
 
       - name: Restore main branch and remove 'assignment' cells
         run: |
@@ -245,8 +250,6 @@ jobs:
         run: |          
           # Create fresh solution from cleaned main
           git checkout -b solution origin/main
-          git rm .github/workflows/generate-student-notebook.yml
-          git rm requirements.txt
           git add .
           
           # Commit and capture hash if there are staged changes
@@ -278,5 +281,11 @@ jobs:
             git add book/_config.yml
             git commit -m "Update git_exclude_commits with cleaning commit hash"
           } || echo "No changes to commit"
+
+          #remove unnecessary files for students
+          git rm .github/workflows/generate-student-notebook.yml
+          git rm requirements.txt
+          git add .
+          git commit "Removed authoring files"
           
           git push origin solution
