@@ -140,35 +140,7 @@ jobs:
           git add .
           
           # Commit and capture hash if there are staged changes
-          git commit -m "Generate assignment version" && {
-            COMMIT_HASH=$(git rev-parse HEAD)
-            echo "Captured commit hash: $COMMIT_HASH"
-            
-            # Update _config.yml with git_exclude_commits
-            python -c "
-          import re
-          with open('book/_config.yml', 'r') as f:
-              content = f.read()
-
-          commit_hash = '$COMMIT_HASH'
-
-          # Append hash to git_exclude_commits list
-          content = re.sub(
-              r'(git_exclude_commits:)(\s*)(\[.*?\])',
-              f\"git_exclude_commits: [{repr(commit_hash)}]\",
-              content,
-              flags=re.DOTALL
-          )
-
-          with open('book/_config.yml', 'w') as f:
-              f.write(content)
-          "
-            
-            # Create second commit for config update
-            git add book/_config.yml
-            git commit -m "Update git_exclude_commits with cleaning commit hash"
-          } || echo "No changes to commit"
-
+          git commit -m "Generate assignment version" || echo "No changes to commit"
           
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
@@ -253,34 +225,7 @@ jobs:
           git add .
           
           # Commit and capture hash if there are staged changes
-          git commit -m "Generate solution version" && {
-            COMMIT_HASH=$(git rev-parse HEAD)
-            echo "Captured commit hash: $COMMIT_HASH"
-            
-            # Update _config.yml with git_exclude_commits
-            python -c "
-          import re
-          with open('book/_config.yml', 'r') as f:
-              content = f.read()
-
-          commit_hash = '$COMMIT_HASH'
-
-          # Append hash to git_exclude_commits list
-          content = re.sub(
-              r'(git_exclude_commits:)(\s*)(\[.*?\])',
-              f\"git_exclude_commits: [{repr(commit_hash)}]\",
-              content,
-              flags=re.DOTALL
-          )
-
-          with open('book/_config.yml', 'w') as f:
-              f.write(content)
-          "
-            
-            # Create second commit for config update
-            git add book/_config.yml
-            git commit -m "Update git_exclude_commits with cleaning commit hash"
-          } || echo "No changes to commit"
+          git commit -m "Generate solution version" || echo "No changes to commit"
 
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
