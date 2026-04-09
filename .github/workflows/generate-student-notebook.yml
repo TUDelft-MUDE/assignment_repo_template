@@ -14,10 +14,17 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout code
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FG_MUDE_2025_token }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -116,24 +123,55 @@ jobs:
           '
 
       - name: Commit and push changes assignment version
-        env:
-          TOKEN: ${{ secrets.FG_MUDE_2025_token }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git checkout -b assignment
-          git merge origin/main
+          
+          # Delete remote branches to start fresh (ignore errors if they don't exist)
+          git push origin --delete assignment 2>/dev/null || true
+          git push origin --delete solution 2>/dev/null || true
+          
+          # Delete local branches to start fresh (ignore errors if they don't exist)
+          git branch -D assignment 2>/dev/null || true
+          git branch -D solution 2>/dev/null || true
+          
+          # Create fresh assignment from cleaned main
+          git checkout -b assignment origin/main
+          git rm .github/workflows/generate-student-notebook.yml
+          git rm requirements.txt
           git add .
-          if git diff --cached --quiet; then
-            echo "Warning: assignment version is not different than main."
-          else
-            git commit -m "Generate assignment version"
-            git rm .github/workflows/generate-student-notebook.yml
-            git rm requirements.txt
-            git add .
-            git commit -m "Remove requirements and workflow file from assignment branch"
-            git push origin assignment --force
-          fi
+          
+          # Commit and capture hash if there are staged changes
+          git commit -m "Generate assignment version" && {
+            COMMIT_HASH=$(git rev-parse HEAD)
+            echo "Captured commit hash: $COMMIT_HASH"
+            
+            # Update _config.yml with git_exclude_commits
+            python -c "
+          import re
+          with open('book/_config.yml', 'r') as f:
+              content = f.read()
+
+          commit_hash = '$COMMIT_HASH'
+
+          # Append hash to git_exclude_commits list
+          content = re.sub(
+              r'(git_exclude_commits:)(\s*)(\[.*?\])',
+              f\"git_exclude_commits: [{repr(commit_hash)}]\",
+              content,
+              flags=re.DOTALL
+          )
+
+          with open('book/_config.yml', 'w') as f:
+              f.write(content)
+          "
+            
+            # Create second commit for config update
+            git add book/_config.yml
+            git commit -m "Update git_exclude_commits with cleaning commit hash"
+          } || echo "No changes to commit"
+          
+          git push origin assignmnet
 
       - name: Restore main branch and remove 'assignment' cells
         run: |
@@ -204,19 +242,41 @@ jobs:
           '
 
       - name: Commit and push solution version
-        env:
-          TOKEN: ${{ secrets.FG_MUDE_2025_token }}
-        run: |
-          git checkout -b solution
-          git merge origin/main
+        run: |          
+          # Create fresh solution from cleaned main
+          git checkout -b solution origin/main
+          git rm .github/workflows/generate-student-notebook.yml
+          git rm requirements.txt
           git add .
-          if git diff --cached --quiet; then
-            echo "Warning: solution version is not different than main."
-          else
-            git commit -m "Generate solution version"
-            git rm .github/workflows/generate-student-notebook.yml
-            git rm requirements.txt
-            git add .
-            git commit -m "Remove requirements and workflow file from solution branch"
-            git push origin solution --force
-          fi
+          
+          # Commit and capture hash if there are staged changes
+          git commit -m "Generate solution version" && {
+            COMMIT_HASH=$(git rev-parse HEAD)
+            echo "Captured commit hash: $COMMIT_HASH"
+            
+            # Update _config.yml with git_exclude_commits
+            python -c "
+          import re
+          with open('book/_config.yml', 'r') as f:
+              content = f.read()
+
+          commit_hash = '$COMMIT_HASH'
+
+          # Append hash to git_exclude_commits list
+          content = re.sub(
+              r'(git_exclude_commits:)(\s*)(\[.*?\])',
+              f\"git_exclude_commits: [{repr(commit_hash)}]\",
+              content,
+              flags=re.DOTALL
+          )
+
+          with open('book/_config.yml', 'w') as f:
+              f.write(content)
+          "
+            
+            # Create second commit for config update
+            git add book/_config.yml
+            git commit -m "Update git_exclude_commits with cleaning commit hash"
+          } || echo "No changes to commit"
+          
+          git push origin solution
