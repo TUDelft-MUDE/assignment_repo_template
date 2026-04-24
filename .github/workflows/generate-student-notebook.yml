@@ -121,6 +121,59 @@ jobs:
                       with open(markdown_file, "w") as f:
                           f.writelines(filtered_lines)
           '
+      
+      - name: Remove solution sections from py files
+        run: |
+          python -c '
+          import os
+
+          # Walk through all files in the repository
+          for root, _, files in os.walk("."):
+              for file in files:
+                  if file.endswith(".py"):
+                      py_file = os.path.join(root, file)
+                      with open(py_file, "r") as f:
+                          lines = f.readlines()
+
+                      # Remove lines between "# solution_start" and "# solution_end"
+                      in_solution_block = False
+                      filtered_lines = []
+                      for line in lines:
+                          if "# solution_start" in line:
+                              in_solution_block = True
+                          elif "# solution_end" in line:
+                              in_solution_block = False
+                          elif not in_solution_block:
+                              filtered_lines.append(line)
+
+                      # Raise an error if a solution block was not properly closed
+                      if in_solution_block:
+                          raise ValueError("Unclosed # solution_start detected in file: " + py_file)
+
+                      # Save the modified python file
+                      with open(py_file, "w") as f:
+                          f.writelines(filtered_lines)
+          '
+      
+      - name: Remove assignment lines from py files
+        run: |
+          python -c '
+          import os
+
+          # Walk through all files in the repository
+          for root, _, files in os.walk("."):
+              for file in files:
+                  if file.endswith(".py"):
+                      py_file = os.path.join(root, file)
+                      with open(py_file, "r") as f:
+                          lines = f.readlines()
+                      
+                      filtered_lines = [line for line in lines if not line.strip().startswith("# assignment")]
+
+                      # Save the modified python file
+                      with open(py_file, "w") as f:
+                          f.writelines(filtered_lines)
+          '
 
       - name: Commit and push changes assignment version
         run: |
@@ -216,6 +269,59 @@ jobs:
                 # Save the modified markdown file
                 with open(markdown_file, "w") as f:
                   f.writelines(filtered_lines)
+          '
+
+      - name: Remove assignment sections from py files
+        run: |
+          python -c '
+          import os
+
+          # Walk through all files in the repository
+          for root, _, files in os.walk("."):
+              for file in files:
+                  if file.endswith(".py"):
+                      py_file = os.path.join(root, file)
+                      with open(py_file, "r") as f:
+                          lines = f.readlines()
+
+                      # Remove lines between "# assignment_start" and "# assignment_end"
+                      in_assignment_block = False
+                      filtered_lines = []
+                      for line in lines:
+                          if "# assignment_start" in line:
+                              in_assignment_block = True
+                          elif "# assignment_end" in line:
+                              in_assignment_block = False
+                          elif not in_assignment_block:
+                              filtered_lines.append(line)
+
+                      # Raise an error if an assignment block was not properly closed
+                      if in_assignment_block:
+                          raise ValueError("Unclosed # assignment_start detected in file: " + py_file)
+
+                      # Save the modified python file
+                      with open(py_file, "w") as f:
+                          f.writelines(filtered_lines)
+          '
+      
+      - name: Remove solution lines from py files
+        run: |
+          python -c '
+          import os
+
+          # Walk through all files in the repository
+          for root, _, files in os.walk("."):
+              for file in files:
+                  if file.endswith(".py"):
+                      py_file = os.path.join(root, file)
+                      with open(py_file, "r") as f:
+                          lines = f.readlines()
+
+                      filtered_lines = [line for line in lines if not line.strip().startswith("# solution")]
+
+                      # Save the modified python file
+                      with open(py_file, "w") as f:
+                          f.writelines(filtered_lines)
           '
 
       - name: Commit and push solution version
