@@ -3,6 +3,7 @@
 <Assignment introduction>
 
 You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<PA...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<PA...>/README.html. Instructions can be downloaded as `.md` or `.ipynb` files to your computer.
+
 To activate autograding, access this assignment with the following link: <classroom.github.com/a/<...>. If you don't want to make this assignment as part of a grade, access the assignment here: https://github.com/MUDE-2026/<PA...> (available after the deadline) to download all assignment files including potential supplementary files.
 
 Before you can start this assignment, read the theory pages in the [book](https://mude.citg.tudelft.nl/book/2026/<>):
