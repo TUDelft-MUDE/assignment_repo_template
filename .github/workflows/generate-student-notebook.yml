@@ -197,7 +197,6 @@ jobs:
           
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
-          git rm requirements.txt
           git add .
           git commit -m "Removed authoring files"
           
@@ -335,7 +334,6 @@ jobs:
 
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
-          git rm requirements.txt
           git add .
           git commit -m "Removed authoring files"
           
