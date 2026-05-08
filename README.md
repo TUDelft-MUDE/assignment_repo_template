@@ -20,12 +20,11 @@ In this assignment you’ll make exercises on the following topics:
 - Fundamental programming concepts
     - <[topic(s) per file](./filename)>
 
-<For GAs:>
-This assignment is due on <day of week>, <month> <day>, <year>.
-
 <for PAs:>
 The autograder checks the following aspects of your work for each push to GitHub:
 
 1. <autograder aspect>
+
+This assignment is due on <time>, <day of week>, <month> <day>, <year>.
 
 > By `<author>`, Delft University of Technology. CC BY 4.0, more info [on the Credits page of Workbook](https://mude.citg.tudelft.nl/workbook-2026/credits.html).
