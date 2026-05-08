@@ -199,8 +199,29 @@ jobs:
           
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
+
+          archive_name="all_files.zip"
+          rm -f "$archive_name"
+          python - <<'PY'
+          import pathlib
+          import zipfile
+
+          root = pathlib.Path('.').resolve()
+          archive_path = root / "all_files.zip"
+
+          with zipfile.ZipFile(archive_path, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            for path in sorted(root.rglob('*')):
+              if not path.is_file():
+                continue
+              if '.git' in path.parts:
+                continue
+              if path == archive_path:
+                continue
+              archive.write(path, path.relative_to(root))
+          PY
+
           git add .
-          git commit -m "Removed authoring files"
+          git commit -m "Removed authoring files and added assignment archive"
           
           git push origin assignment
 
@@ -336,7 +357,28 @@ jobs:
 
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
+
+          archive_name="all_files.zip"
+          rm -f "$archive_name"
+          python - <<'PY'
+          import pathlib
+          import zipfile
+
+          root = pathlib.Path('.').resolve()
+          archive_path = root / "all_files.zip"
+
+          with zipfile.ZipFile(archive_path, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            for path in sorted(root.rglob('*')):
+              if not path.is_file():
+                continue
+              if '.git' in path.parts:
+                continue
+              if path == archive_path:
+                continue
+              archive.write(path, path.relative_to(root))
+          PY
+
           git add .
-          git commit -m "Removed authoring files"
+          git commit -m "Removed authoring files and added solution archive"
           
           git push origin solution
