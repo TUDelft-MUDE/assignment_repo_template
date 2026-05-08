@@ -224,7 +224,7 @@ jobs:
             for path in sorted(root.rglob('*')):
               if not path.is_file():
                 continue
-              if '.git' in path.parts:
+              if '.git' in path.parts or '.github' in path.parts:
                 continue
               if path == archive_path:
                 continue
