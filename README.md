@@ -14,6 +14,6 @@ In this assignment you’ll make exercises on the following topics:
 
 - <[topic(s) per file](./filename)>
 
-This assignment is due on <day of week>, <month> <day>, <year>.
+This assignment is due on <time>, <day of week>, <month> <day>, <year>.
 
 > By `<author>`, Delft University of Technology. CC BY 4.0, more info [on the Credits page of Workbook](https://mude.citg.tudelft.nl/workbook-2026/credits.html).
