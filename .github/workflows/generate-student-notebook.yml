@@ -200,14 +200,25 @@ jobs:
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
 
-          archive_name="all_files.zip"
+          archive_name="$(python - <<'PY'
+          import os
+          import re
+
+          repo_name = os.environ['GITHUB_REPOSITORY'].rsplit('/', 1)[-1]
+          repo_name = re.sub(r'(?<=[A-Za-z])(?=[0-9])|(?<=[0-9])(?=[A-Za-z])', '_', repo_name)
+          repo_name = re.sub(r'[^A-Za-z0-9]+', '_', repo_name).strip('_')
+          print(f'all_files_{repo_name}.zip')
+          PY
+          )"
+          export ARCHIVE_NAME="$archive_name"
           rm -f "$archive_name"
           python - <<'PY'
+          import os
           import pathlib
           import zipfile
 
           root = pathlib.Path('.').resolve()
-          archive_path = root / "all_files.zip"
+          archive_path = root / os.environ['ARCHIVE_NAME']
 
           with zipfile.ZipFile(archive_path, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             for path in sorted(root.rglob('*')):
@@ -221,11 +232,12 @@ jobs:
           PY
 
           python - <<'PY'
+          import os
           import pathlib
           import nbformat
 
           root = pathlib.Path('.').resolve()
-          archive_path = root / 'all_files.zip'
+          archive_path = root / os.environ['ARCHIVE_NAME']
           link_template = '\n'.join([
             '```{{custom_download_link}} {archive_rel_path}',
             ':text: ".zip assignment"',
@@ -403,16 +415,27 @@ jobs:
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
 
-          archive_name="all_files.zip"
+          archive_name="$(python - <<'PY'
+          import os
+          import re
+
+          repo_name = os.environ['GITHUB_REPOSITORY'].rsplit('/', 1)[-1]
+          repo_name = re.sub(r'(?<=[A-Za-z])(?=[0-9])|(?<=[0-9])(?=[A-Za-z])', '_', repo_name)
+          repo_name = re.sub(r'[^A-Za-z0-9]+', '_', repo_name).strip('_')
+          print(f'all_files_{repo_name}.zip')
+          PY
+          )"
+          export ARCHIVE_NAME="$archive_name"
           rm -f "$archive_name"
-          git show assignment:all_files.zip > "$archive_name"
+          git show "assignment:$archive_name" > "$archive_name"
 
           python - <<'PY'
+          import os
           import pathlib
           import nbformat
 
           root = pathlib.Path('.').resolve()
-          archive_path = root / 'all_files.zip'
+          archive_path = root / os.environ['ARCHIVE_NAME']
           link_template = '\n'.join([
             '```{{custom_download_link}} {archive_rel_path}',
             ':text: ".zip assignment"',
