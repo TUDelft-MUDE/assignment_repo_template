@@ -404,7 +404,57 @@ jobs:
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
 
+          archive_name="all_files.zip"
+          rm -f "$archive_name"
+          git show assignment:all_files.zip > "$archive_name"
+
+          python - <<'PY'
+          import pathlib
+          import nbformat
+
+          root = pathlib.Path('.').resolve()
+          archive_path = root / 'all_files.zip'
+          link_template = '\n'.join([
+            '```{{custom_download_link}} {archive_rel_path}',
+            ':text: ".zip excluding solutions"',
+            ':replace_default: "True"',
+            '```',
+          ])
+
+          def relative_archive_path(file_path: pathlib.Path) -> str:
+            rel_path = archive_path.relative_to(file_path.parent, walk_up=True).as_posix()
+            if not rel_path.startswith('.'):
+              rel_path = f'./{rel_path}'
+            return rel_path
+
+          for file_path in sorted(root.rglob('*')):
+            if not file_path.is_file():
+              continue
+            if '.git' in file_path.parts:
+              continue
+
+            if file_path.suffix == '.md':
+              link_block = link_template.format(archive_rel_path=relative_archive_path(file_path))
+              content = file_path.read_text(encoding='utf-8')
+              if link_block in content:
+                continue
+              separator = '' if content.endswith('\n') or not content else '\n'
+              file_path.write_text(f"{content}{separator}\n{link_block}\n", encoding='utf-8')
+
+            if file_path.suffix == '.ipynb':
+              link_block = link_template.format(archive_rel_path=relative_archive_path(file_path))
+              with file_path.open(encoding='utf-8') as notebook_handle:
+                notebook = nbformat.read(notebook_handle, as_version=4)
+
+              download_cell = nbformat.v4.new_markdown_cell(link_block)
+              download_cell.setdefault('metadata', {}).setdefault('tags', []).append('remove-cell')
+              notebook.cells.append(download_cell)
+
+              with file_path.open('w', encoding='utf-8') as notebook_handle:
+                nbformat.write(notebook, notebook_handle)
+          PY
+
           git add .
-          git commit -m "Removed authoring files"
+          git commit -m "Removed authoring files, reused assignment archive, and inserted download links"
           
           git push origin solution
