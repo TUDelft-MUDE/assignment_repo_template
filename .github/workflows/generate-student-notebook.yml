@@ -227,7 +227,7 @@ jobs:
           root = pathlib.Path('.').resolve()
           archive_path = root / 'all_files.zip'
           link_template = '\n'.join([
-            '```{custom_download_link} {archive_rel_path}',
+            '```{{custom_download_link}} {archive_rel_path}',
             ':text: ".zip excluding solutions"',
             ':replace_default: "True"',
             '```',
