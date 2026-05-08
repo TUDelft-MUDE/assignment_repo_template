@@ -2,9 +2,9 @@
 
 <Assignment introduction>
 
-You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<GA...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<GA...>/README.html. Individual pages can be downloaded as `.md` or `.ipynb` files to your computer.
+You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<GA...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<GA...>/README.html. All files of an assignment can be downloaded as [`.zip`-file](https://mude.citg.tudelft.nl/workbook-2026/_custom_downloads/assignments/<GA_x_x...>/all_files_<GA_x_x...>.zip) to your computer.
 
-To hand in your work, access this assignment with the following link: <classroom.github.com/a/<...>. If you don't want to make this assignment as part of MUDE, access the assignment here: https://github.com/MUDE-2026/<GA...> (available after the deadline) for the full assignment repository.
+To hand in your work, access this assignment with the following link: <classroom.github.com/a/<...>.
 
 Before you can start this assignment, read the theory pages in the [book](https://mude.citg.tudelft.nl/book/2026/<>):
 
