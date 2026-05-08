@@ -28,3 +28,8 @@ The autograder checks the following aspects of your work for each push to GitHub
 This assignment is due on <time>, <day of week>, <month> <day>, <year>.
 
 > By `<author>`, Delft University of Technology. CC BY 4.0, more info [on the Credits page of Workbook](https://mude.citg.tudelft.nl/workbook-2026/credits.html).
+
+```{custom_download_link} ./all_files_assignment_repo_template.zip
+:text: ".zip assignment"
+:replace_default: "True"
+```
