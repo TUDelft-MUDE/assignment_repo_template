@@ -220,8 +220,55 @@ jobs:
               archive.write(path, path.relative_to(root))
           PY
 
+          python - <<'PY'
+          import pathlib
+          import nbformat
+
+          root = pathlib.Path('.').resolve()
+          archive_path = root / 'all_files.zip'
+          link_template = '\n'.join([
+            '```{custom_download_link} {archive_rel_path}',
+            ':text: ".zip excluding solutions"',
+            ':replace_default: "True"',
+            '```',
+          ])
+
+          def relative_archive_path(file_path: pathlib.Path) -> str:
+            rel_path = archive_path.relative_to(file_path.parent, walk_up=True).as_posix()
+            if not rel_path.startswith('.'):
+              rel_path = f'./{rel_path}'
+            return rel_path
+
+          for file_path in sorted(root.rglob('*')):
+            if not file_path.is_file():
+              continue
+            if '.git' in file_path.parts:
+              continue
+
+            if file_path.suffix == '.md':
+              link_block = link_template.format(archive_rel_path=relative_archive_path(file_path))
+              content = file_path.read_text(encoding='utf-8')
+              if link_block in content:
+                continue
+              separator = '' if content.endswith('\n') or not content else '\n'
+              file_path.write_text(f"{content}{separator}\n{link_block}\n", encoding='utf-8')
+
+            if file_path.suffix == '.ipynb':
+              link_block = link_template.format(archive_rel_path=relative_archive_path(file_path))
+              with file_path.open(encoding='utf-8') as notebook_handle:
+                notebook = nbformat.read(notebook_handle, as_version=4)
+
+              if any(cell.get('cell_type') == 'markdown' and ''.join(cell.get('source', [])) == link_block for cell in notebook.cells):
+                continue
+
+              notebook.cells.append(nbformat.v4.new_markdown_cell(link_block))
+
+              with file_path.open('w', encoding='utf-8') as notebook_handle:
+                nbformat.write(notebook, notebook_handle)
+          PY
+
           git add .
-          git commit -m "Removed authoring files and added assignment archive"
+          git commit -m "Removed authoring files, added assignment archive, and inserted download links"
           
           git push origin assignment
 
@@ -358,27 +405,7 @@ jobs:
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
 
-          archive_name="all_files.zip"
-          rm -f "$archive_name"
-          python - <<'PY'
-          import pathlib
-          import zipfile
-
-          root = pathlib.Path('.').resolve()
-          archive_path = root / "all_files.zip"
-
-          with zipfile.ZipFile(archive_path, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
-            for path in sorted(root.rglob('*')):
-              if not path.is_file():
-                continue
-              if '.git' in path.parts:
-                continue
-              if path == archive_path:
-                continue
-              archive.write(path, path.relative_to(root))
-          PY
-
           git add .
-          git commit -m "Removed authoring files and added solution archive"
+          git commit -m "Removed authoring files"
           
           git push origin solution
