@@ -259,7 +259,6 @@ jobs:
                 notebook = nbformat.read(notebook_handle, as_version=4)
 
               download_cell = nbformat.v4.new_markdown_cell(link_block)
-              download_cell.setdefault('metadata', {}).setdefault('tags', []).append('remove-cell')
               notebook.cells.append(download_cell)
 
               with file_path.open('w', encoding='utf-8') as notebook_handle:
@@ -447,7 +446,6 @@ jobs:
                 notebook = nbformat.read(notebook_handle, as_version=4)
 
               download_cell = nbformat.v4.new_markdown_cell(link_block)
-              download_cell.setdefault('metadata', {}).setdefault('tags', []).append('remove-cell')
               notebook.cells.append(download_cell)
 
               with file_path.open('w', encoding='utf-8') as notebook_handle:
