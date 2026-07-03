@@ -199,6 +199,7 @@ jobs:
           
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
+          git rm report.md
 
           archive_name="$(python - <<'PY'
           import os
