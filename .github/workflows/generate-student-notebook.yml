@@ -177,28 +177,38 @@ jobs:
                           f.writelines(filtered_lines)
           '
 
-      - name: Commit and push changes assignment version
+      - name: Commit and push assignment template and assignment versions
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           # Delete remote branches to start fresh (ignore errors if they don't exist)
+          git push origin --delete assignment_template 2>/dev/null || true
           git push origin --delete assignment 2>/dev/null || true
           git push origin --delete solution 2>/dev/null || true
           
           # Delete local branches to start fresh (ignore errors if they don't exist)
+          git branch -D assignment_template 2>/dev/null || true
           git branch -D assignment 2>/dev/null || true
           git branch -D solution 2>/dev/null || true
           
-          # Create fresh assignment from cleaned main
-          git checkout -b assignment origin/main
+          # Create fresh assignment template from cleaned main (no archive/download link yet)
+          git checkout -b assignment_template origin/main
           git add .
           
           # Commit and capture hash if there are staged changes
-          git commit -m "Generate assignment version" || echo "No changes to commit"
+          git commit -m "Generate assignment template version" || echo "No changes to commit"
           
           #remove unnecessary files for students
           git rm .github/workflows/generate-student-notebook.yml
+
+          git add .
+          git commit -m "Removed authoring files from assignment template" || echo "No changes to commit"
+
+          git push origin assignment_template
+
+          # Create assignment branch with archive/download links from assignment template
+          git checkout -b assignment assignment_template
 
           archive_name="$(python - <<'PY'
           import os
@@ -278,7 +288,7 @@ jobs:
           PY
 
           git add .
-          git commit -m "Removed authoring files, added assignment archive, and inserted download links"
+          git commit -m "Added assignment archive and inserted download links"
           
           git push origin assignment
 
