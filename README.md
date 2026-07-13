@@ -4,7 +4,7 @@
 
 You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<GA...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<GA...>/README.html. All files of an assignment can be downloaded as [`.zip`-file](https://mude.citg.tudelft.nl/workbook-2026/_custom_downloads/assignments/<GA_x_x...>/all_files_<GA_x_x...>.zip) to your computer.
 
-At 11:30, you'll have to close laptops and receive a set of questions to be solved as a group. These questions are based on what you did in the first three hours. You can make use of notes used in the first three hours, but you are not allowed to use any other resources like AI. At 12:30, you'll hand in your handwritten answers to the questions.
+At 11:30, you'll have to close laptops and receive a set of questions to be solved as a group. These questions are based on what you did in the first three hours. You can make use of notes written in the first three hours, but you are not allowed to use any other resources like AI. At 12:30, you'll hand in your handwritten answers to the questions.
 
 Before you can start this assignment, you should have read the theory in the [book](https://mude.citg.tudelft.nl/book/2026/<chapter>), completed the [Wednesday's workshop](https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<WS...>/README.html) and the [programming assignment](https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<PA...>/README.html) of this week.
 
