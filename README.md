@@ -2,7 +2,7 @@
 
 <Assignment introduction>
 
-You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<...>/README.html. All files of an assignment can be downloaded as [`.zip`-file](https://mude.citg.tudelft.nl/workbook-2026/_custom_downloads/assignments/<...PA_x_x/WS_x_x/GA_x_x>/all_files_<...PA_x_x/WS_x_x/GA_x_x>.zip) to your computer.
+You can preview the instructions of this assignment on https://mude.citg.tudelft.nl/workbook-2026/assignments/<...>/README.html. After the deadline, this link will include solutions. The preview without solutions will remain available here: https://mude.citg.tudelft.nl/workbook-2026/no_solutions/assignments/<...>/README.html. All files of an assignment can be downloaded as [`.zip`-file](https://mude.citg.tudelft.nl/workbook-2026/_custom_downloads/assignments/<...PAx.x/WSx.x/GAx.x>/all_files_<...PA_x_x/WS_x_x/GA_x_x>.zip) to your computer.
 
 <For GAs:> To hand in your work <For PAs:> To activate autograding, access this assignment with the following link: <classroom.github.com/a/<...>.
 
